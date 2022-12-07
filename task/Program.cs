@@ -1,4 +1,6 @@
-﻿namespace task
+﻿using System.Drawing;
+
+namespace task
 {
     /// <summary>
     /// Flyweight
@@ -33,11 +35,43 @@
     /// единицы будет один, однако рисоваться будет сразу в нескольких частях 
     /// экрана.
     /// </summary>
+
+    // Паттерн используется для уменьшения затрат при работе с большим количеством мелких объектов.
+    // Следует применять этот паттерн, когда выполнены все нижеперечисленные условия:
+    // - в приложении используется большое число объектов;
+    // - из-за этого накладные расходы на хранение высоки;
+    // - большую часть состояния объектов можно вынести вовне;
+    // - многие группы объектов можно заменить относительно небольшим количеством разделяемых объектов, поскольку внешнее состояние вынесено.
+
     internal class Program
     {
         static void Main(string[] args)
         {
+            /*
+            Client - клиент:
+            - хранит ссылки на одного или нескольких приспособленцев;
+            - вычисляет или хранит внешнее состояние приспособленцев.
+            */
+            List<string> units = new List<string>()
+            {
+                "Aerotechnics",
+                "Aerotechnics",
+                "LightGroundCombatEquipment",
+                "HeavyGroundCombatEquipment",
+                "HeavyGroundCombatEquipment",
+                "LightInfantry",
+                "TransportVehicles"
+            };
 
+            CombatUnitFactory factory = new CombatUnitFactory();
+            Random r = new Random();
+            // take random units from the list 10 times.
+            for (int i = 0; i < 10; i++)
+            {
+                int index = r.Next(0, units.Count);
+                CombatUnit unit = factory.GetCombatUnit(units[index]);
+                unit.Show(new Point(r.Next(0, 100), r.Next(0, 100)));
+            }
         }
     }
 }
